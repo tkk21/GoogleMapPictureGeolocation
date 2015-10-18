@@ -54,6 +54,7 @@ public class MapsActivity extends FragmentActivity
     private Location mCurrentLocation;
     private String mLastUpdatTime;
 
+    private LocationCSV locationCSV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,18 +77,22 @@ public class MapsActivity extends FragmentActivity
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
         updateValuesFromBundle(savedInstanceState);
+        locationCSV = new LocationCSV();
+        locationCSV.init();
     }
 
     @Override
     protected void onStart (){
         super.onStart();
         mGoogleApiClient.connect();
+        locationCSV.init();
     }
 
     @Override
     protected void onStop (){
         super.onStop();
         mGoogleApiClient.disconnect();
+        locationCSV.close();
     }
 
     @Override
@@ -97,12 +102,14 @@ public class MapsActivity extends FragmentActivity
         if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates){
             startLocationUpdates();
         }
+        locationCSV.init();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
+        locationCSV.close();
     }
 
     /**
@@ -207,6 +214,7 @@ public class MapsActivity extends FragmentActivity
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             addMarker(imageBitmap);
+            locationCSV.write(mLastUpdatTime, mCurrentLocation);
         }
 
     }
