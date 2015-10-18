@@ -14,6 +14,7 @@ import android.widget.Button;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -121,9 +122,21 @@ public class MapsActivity extends FragmentActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-
     }
 
+    //Location service stuff
+
+    /**
+     * Set up a Location Request
+     */
+    protected void createLocationQuest() {
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(10000); //10s
+        mLocationRequest.setFastestInterval(5000); //5s
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
+
+    
     @Override
     public void onConnected(Bundle bundle) {
 
