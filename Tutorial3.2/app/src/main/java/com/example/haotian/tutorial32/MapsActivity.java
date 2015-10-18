@@ -3,6 +3,7 @@ package com.example.haotian.tutorial32;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.location.GpsSatellite;
 import android.location.Location;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.sql.Connection;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -51,8 +53,10 @@ public class MapsActivity extends FragmentActivity
     private Location mCurrentLocation;
     private String mLastUpdatTime;
 
+    /**thumbnail image*/
     private ImageView mImageView;
 
+    ArrayList<ImageView> thumbnailList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +177,16 @@ public class MapsActivity extends FragmentActivity
         mMap.addMarker(new MarkerOptions().position(new LatLng(20, 20)).title("EECS397/600"));
     }
 
+    private void addMarker (){
+        mMap.addMarker(
+                new MarkerOptions()
+                        .position(new LatLng(
+                                mCurrentLocation.getLatitude(),
+                                mCurrentLocation.getLongitude()))
+                        .icon(BitmapDescriptorFactory.fromBitmap(
+                                ((BitmapDrawable)mImageView.getDrawable()).getBitmap())));
+    }
+
     /**
      * helper method to send intent to take picture
      */
@@ -195,6 +209,7 @@ public class MapsActivity extends FragmentActivity
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             mImageView.setImageBitmap(imageBitmap);
+            addMarker();
         }
 
     }
