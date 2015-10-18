@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.sql.Connection;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 
@@ -53,10 +54,6 @@ public class MapsActivity extends FragmentActivity
     private Location mCurrentLocation;
     private String mLastUpdatTime;
 
-    /**thumbnail image*/
-    private ImageView mImageView;
-
-    ArrayList<ImageView> thumbnailList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,14 +174,15 @@ public class MapsActivity extends FragmentActivity
         mMap.addMarker(new MarkerOptions().position(new LatLng(20, 20)).title("EECS397/600"));
     }
 
-    private void addMarker (){
+    private void addMarker (Bitmap bitmap){
         mMap.addMarker(
                 new MarkerOptions()
                         .position(new LatLng(
                                 mCurrentLocation.getLatitude(),
                                 mCurrentLocation.getLongitude()))
                         .icon(BitmapDescriptorFactory.fromBitmap(
-                                ((BitmapDrawable)mImageView.getDrawable()).getBitmap())));
+                                bitmap)));
+                                //((BitmapDrawable)mImageView.getDrawable()).getBitmap())));
     }
 
     /**
@@ -208,8 +206,7 @@ public class MapsActivity extends FragmentActivity
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
-            mImageView.setImageBitmap(imageBitmap);
-            addMarker();
+            addMarker(imageBitmap);
         }
 
     }
