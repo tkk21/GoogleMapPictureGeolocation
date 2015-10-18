@@ -26,7 +26,7 @@ public class LocationCSV {
     public void init (){
         boolean fileExists = file.exists();
         try {
-            bufferedWriter = new BufferedWriter(new FileWriter(file));
+            bufferedWriter = new BufferedWriter(new FileWriter(file, true));
         }
         catch(IOException e){
             Log.wtf("LocationCSV", String.format("The file %s already exists", file.toString()));
@@ -49,12 +49,12 @@ public class LocationCSV {
             bufferedWriter.append(
                     String.format("%s,%f,%f",
                             timeStamp, location.getLatitude(), location.getLongitude()));
-
             bufferedWriter.newLine();
             bufferedWriter.flush();
         }
         catch(IOException e){
             Log.wtf("LocationCSV", "could not write a line of data");
+            e.printStackTrace();
         }
     }
 
