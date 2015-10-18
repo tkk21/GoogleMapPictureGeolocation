@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.location.GpsSatellite;
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
+import android.os.Debug;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -16,6 +16,7 @@ import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
@@ -66,7 +67,8 @@ public class MapsActivity extends FragmentActivity
                 dispatchTakePictureIntent();
             }
         });
-
+        mRequestingLocationUpdates = true;
+        createLocationRequest();
         //instantiates the google api client
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -100,11 +102,6 @@ public class MapsActivity extends FragmentActivity
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
-    }
-
-    protected void stopLocationUpdates() {
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient
-                , (com.google.android.gms.location.LocationListener) this);
     }
 
     /**
@@ -199,6 +196,7 @@ public class MapsActivity extends FragmentActivity
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             mImageView.setImageBitmap(imageBitmap);
         }
+
     }
 
     //Location service stuff
@@ -206,7 +204,7 @@ public class MapsActivity extends FragmentActivity
     /**
      * Set up a Location Request
      */
-    protected void createLocationQuest() {
+    protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000); //10s
         mLocationRequest.setFastestInterval(5000); //5s
@@ -219,16 +217,19 @@ public class MapsActivity extends FragmentActivity
      */
     @Override
     public void onConnected(Bundle bundle) {
-
-        //stuff
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
     }
 
     protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
-                (com.google.android.gms.location.LocationListener) this);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest
+                , this);
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient
+                , this);
     }
 
     @Override
@@ -247,46 +248,12 @@ public class MapsActivity extends FragmentActivity
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
         mLastUpdatTime = DateFormat.getTimeInstance().format((new Date()));
+        Log.d("MapsActivity", String.format("Location is: %f, %f", location.getLatitude(), location.getLongitude()));
         //think this is all that is needed
-    }
-
-    /**
-     * Called when the provider status changes. This method is called when
-     * a provider is unable to fetch a location or if the provider has recently
-     * become available after a period of unavailability.
-     *
-     */
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    /**
-     * Called when the provider is enabled by the user.
-     *
-     * @param provider the name of the location provider associated with this
-     *                 update.
-     */
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    /**
-     * Called when the provider is disabled by the user. If requestLocationUpdates
-     * is called on an already disabled provider, this method is called
-     * immediately.
-     *
-     * @param provider the name of the location provider associated with this
-     *                 update.
-     */
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
+        Log.wtf("MapsActivity", "Connection Failed");
     }
 }
