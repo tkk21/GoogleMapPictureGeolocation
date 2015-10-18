@@ -33,7 +33,8 @@ import java.util.Date;
 
 
 public class MapsActivity extends FragmentActivity
-        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        LocationListener {
     /**constants */
     public static final String TAG = "MapsActivity";
     public static final int THUMBNAIL = 1;
@@ -106,7 +107,9 @@ public class MapsActivity extends FragmentActivity
     @Override
     protected void onPause() {
         super.onPause();
-        stopLocationUpdates();
+        if (mGoogleApiClient.isConnected()) {
+            stopLocationUpdates();
+        }
         //locationCSV.close();
         //the app pauses while taking photo
     }
