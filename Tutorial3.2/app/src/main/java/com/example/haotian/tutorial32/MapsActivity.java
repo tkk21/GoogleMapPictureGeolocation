@@ -89,6 +89,22 @@ public class MapsActivity extends FragmentActivity {
         mMap.addMarker(new MarkerOptions().position(new LatLng(20, 20)).title("EECS397/600"));
     }
 
+    /**
+     * helper method to send intent to take picture
+     */
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent (MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null){
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    /**
+     * Do stuff after user takes picture
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
