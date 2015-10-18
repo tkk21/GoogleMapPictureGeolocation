@@ -35,6 +35,9 @@ public class MapsActivity extends FragmentActivity
     public static final String TAG = "MapsActivity";
     public static final int THUMBNAIL = 1;
     public static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final String REQUESTING_LOCATION_UPDATES = "REQUESTING_LOCATION_UPDATES";
+    private static final String LOCATION_KEY = "LOCATION_KEY";
+    private static final String LAST_UPDATED_TIME_STRING_KEY = "LAST_UPDATED_TIME_STRING_KEY";
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private Button picButton; //takes user to camera
@@ -66,6 +69,7 @@ public class MapsActivity extends FragmentActivity
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
+
     }
 
     @Override
@@ -100,6 +104,32 @@ public class MapsActivity extends FragmentActivity
                 , (com.google.android.gms.location.LocationListener) this);
     }
 
+    public void onSaveInstanceState (Bundle savedInstanceState){
+        savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES, mRequestingLocationUpdates);
+        savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
+        savedInstanceState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdatTime);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    private void updateValuesFromBundle (Bundle savedInstanceState){
+        if (savedInstanceState == null) {
+            return;
+        }
+        //Update the value of mRequestingLocationUpdates from the Bundle
+        if (savedInstanceState.keySet().contains(REQUESTING_LOCATION_UPDATES)) {
+            mRequestingLocationUpdates = savedInstanceState.getBoolean(REQUESTING_LOCATION_UPDATES);
+
+        }
+        //Update the value of mCurrentLocation from the Bundle
+        if (savedInstanceState.keySet().contains(LOCATION_KEY)){
+            mCurrentLocation = savedInstanceState.getParcelable(LOCATION_KEY);
+        }
+        //Update the value of mLastUpdateTime from the Bundle
+        if (savedInstanceState.keySet().contains(LAST_UPDATED_TIME_STRING_KEY)){
+            mLastUpdatTime = savedInstanceState.getString(LAST_UPDATED_TIME_STRING_KEY);
+        }
+
+    }
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
