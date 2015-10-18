@@ -7,13 +7,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.location.GpsSatellite;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Debug;
 import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -92,7 +90,8 @@ public class MapsActivity extends FragmentActivity
     protected void onStop (){
         super.onStop();
         mGoogleApiClient.disconnect();
-        locationCSV.close();
+        //locationCSV.close();
+        //the app stops while trying to take photo
     }
 
     @Override
@@ -102,14 +101,14 @@ public class MapsActivity extends FragmentActivity
         if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates){
             startLocationUpdates();
         }
-        locationCSV.init();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         stopLocationUpdates();
-        locationCSV.close();
+        //locationCSV.close();
+        //the app pauses while taking photo
     }
 
     /**
@@ -189,7 +188,6 @@ public class MapsActivity extends FragmentActivity
                                 mCurrentLocation.getLongitude()))
                         .icon(BitmapDescriptorFactory.fromBitmap(
                                 bitmap)));
-                                //((BitmapDrawable)mImageView.getDrawable()).getBitmap())));
     }
 
     /**
