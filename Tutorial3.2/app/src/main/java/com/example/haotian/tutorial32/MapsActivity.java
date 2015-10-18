@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -48,6 +49,8 @@ public class MapsActivity extends FragmentActivity
     private boolean mRequestingLocationUpdates;
     private Location mCurrentLocation;
     private String mLastUpdatTime;
+
+    private ImageView mImageView;
 
 
     @Override
@@ -104,6 +107,11 @@ public class MapsActivity extends FragmentActivity
                 , (com.google.android.gms.location.LocationListener) this);
     }
 
+    /**
+     * callback to save the state of the activity into a bundle
+     * @param savedInstanceState
+     */
+    @Override
     public void onSaveInstanceState (Bundle savedInstanceState){
         savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES, mRequestingLocationUpdates);
         savedInstanceState.putParcelable(LOCATION_KEY, mCurrentLocation);
@@ -179,14 +187,18 @@ public class MapsActivity extends FragmentActivity
     }
 
     /**
-     * Do stuff after user takes picture
+     * Get the Thumbnail of the photo
      * @param requestCode
      * @param resultCode
      * @param data
      */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            mImageView.setImageBitmap(imageBitmap);
+        }
     }
 
     //Location service stuff
