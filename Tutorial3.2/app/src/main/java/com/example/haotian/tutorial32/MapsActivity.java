@@ -24,11 +24,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-
-import java.sql.Connection;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 
@@ -190,7 +186,8 @@ public class MapsActivity extends FragmentActivity
                                 mCurrentLocation.getLatitude(),
                                 mCurrentLocation.getLongitude()))
                         .icon(BitmapDescriptorFactory.fromBitmap(
-                                bitmap)));
+                                bitmap))
+        );
     }
 
     /**
