@@ -23,7 +23,7 @@ public class LocationCSV {
         file = new File(csvDir, "BuildingLocationData.csv");
     }
 
-    public void init (){
+    private void init (){
         boolean fileExists = file.exists();
         try {
             bufferedWriter = new BufferedWriter(new FileWriter(file, true));
@@ -45,25 +45,18 @@ public class LocationCSV {
     }
 
     public void write (String timeStamp, Location location){
+        init();
         try {
             bufferedWriter.append(
                     String.format("%s,%f,%f",
                             timeStamp, location.getLatitude(), location.getLongitude()));
             bufferedWriter.newLine();
             bufferedWriter.flush();
+            bufferedWriter.close();
         }
         catch(IOException e){
             Log.wtf("LocationCSV", "could not write a line of data");
             e.printStackTrace();
-        }
-    }
-
-    public void close (){
-        try {
-            bufferedWriter.close();
-        }
-        catch(IOException e){
-            Log.wtf("LocationCSV", "failed to close the file");
         }
     }
 }

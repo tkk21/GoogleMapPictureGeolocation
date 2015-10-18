@@ -73,22 +73,18 @@ public class MapsActivity extends FragmentActivity
                 .addOnConnectionFailedListener(this).build();
         updateValuesFromBundle(savedInstanceState);
         locationCSV = new LocationCSV();
-        locationCSV.init();
     }
 
     @Override
     protected void onStart (){
         super.onStart();
         mGoogleApiClient.connect();
-        locationCSV.init();
     }
 
     @Override
     protected void onStop (){
         super.onStop();
         mGoogleApiClient.disconnect();
-        //locationCSV.close();
-        //the app stops while trying to take photo
     }
 
     @Override
@@ -106,8 +102,6 @@ public class MapsActivity extends FragmentActivity
         if (mGoogleApiClient.isConnected()) {
             stopLocationUpdates();
         }
-        //locationCSV.close();
-        //the app pauses while taking photo
     }
 
     /**
