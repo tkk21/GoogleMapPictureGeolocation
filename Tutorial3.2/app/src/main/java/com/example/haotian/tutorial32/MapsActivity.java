@@ -44,8 +44,8 @@ public class MapsActivity extends FragmentActivity
 
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
-    private boolean mRequestingLocationUpdates;
 
+    private boolean mRequestingLocationUpdates;
     private Location mCurrentLocation;
     private String mLastUpdatTime;
 
@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).build();
-
+        updateValuesFromBundle(savedInstanceState);
     }
 
     @Override
