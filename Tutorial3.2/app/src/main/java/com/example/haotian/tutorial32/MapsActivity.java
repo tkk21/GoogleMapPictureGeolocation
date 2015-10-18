@@ -84,6 +84,20 @@ public class MapsActivity extends FragmentActivity
     protected void onResume() {
         super.onResume();
         setUpMapIfNeeded();
+        if (mGoogleApiClient.isConnected() && !mRequestingLocationUpdates){
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient
+                , (com.google.android.gms.location.LocationListener) this);
     }
 
     /**
