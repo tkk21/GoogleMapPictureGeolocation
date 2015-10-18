@@ -41,6 +41,7 @@ public class MapsActivity extends FragmentActivity
 
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
+    private boolean mRequestingLocationUpdates;
 
     private Location mCurrentLocation;
     private String mLastUpdatTime;
@@ -69,11 +70,13 @@ public class MapsActivity extends FragmentActivity
 
     @Override
     protected void onStart (){
+        super.onStart();
         mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStop (){
+        super.onStop();
         mGoogleApiClient.disconnect();
     }
 
@@ -148,16 +151,28 @@ public class MapsActivity extends FragmentActivity
      * Set up a Location Request
      */
     protected void createLocationQuest() {
-        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000); //10s
         mLocationRequest.setFastestInterval(5000); //5s
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
-    
+    /**
+     * Request Location Updates
+     * @param bundle
+     */
     @Override
     public void onConnected(Bundle bundle) {
 
+        //stuff
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest,
+                (com.google.android.gms.location.LocationListener) this);
     }
 
     @Override
