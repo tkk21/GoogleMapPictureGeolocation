@@ -30,7 +30,7 @@ import java.util.Date;
 
 public class MapsActivity extends FragmentActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, GoogleMap.OnMarkerClickListener {
     /**constants */
     public static final String TAG = "MapsActivity";
     public static final int THUMBNAIL = 1;
@@ -159,6 +159,7 @@ public class MapsActivity extends FragmentActivity
             // Check if we were successful in obtaining the map.
             if (mMap != null) {
                 setUpMap();
+                mMap.setOnMarkerClickListener(this);
             }
         }
     }
@@ -267,5 +268,20 @@ public class MapsActivity extends FragmentActivity
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.wtf("MapsActivity", "Connection Failed");
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Log.d("MapsActivity", "marker was clicked");
+        if (marker.getTitle() != null || marker.getSnippet() != null){
+            return false;
+        }
+        String title="yahallo~";
+        String snippet="<:";
+        //make textbox pop up
+        //set marker title and snippet to the input
+        marker.setTitle(title);
+        marker.setSnippet(snippet);
+        return true;
     }
 }
