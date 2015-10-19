@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -28,8 +27,7 @@ import java.util.Date;
 
 public class MapsActivity extends FragmentActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, GoogleMap.OnMarkerClickListener,
-        MarkerTitleSnippetDialogFragment.MarkerTitleSnippetDialogListener {
+        LocationListener, GoogleMap.OnMarkerClickListener{
     /**constants */
     public static final String TAG = "MapsActivity";
     public static final int THUMBNAIL = 1;
@@ -49,8 +47,6 @@ public class MapsActivity extends FragmentActivity
     private String mLastUpdatTime;
 
     private LocationCSV locationCSV;
-
-    private Marker mCurrentMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,7 +259,6 @@ public class MapsActivity extends FragmentActivity
         mCurrentLocation = location;
         mLastUpdatTime = DateFormat.getTimeInstance().format((new Date()));
         Log.d("MapsActivity", String.format("Location is: %f, %f", location.getLatitude(), location.getLongitude()));
-        //think this is all that is needed
     }
 
     @Override
@@ -281,27 +276,18 @@ public class MapsActivity extends FragmentActivity
     public boolean onMarkerClick(Marker marker) {
         Log.d("MapsActivity", "marker was clicked");
         if (marker.getTitle() != null || marker.getSnippet() != null){
+            //normal operation
             return false;
         }
         //make textbox pop up
         //set marker title and snippet to the input
-        mCurrentMarker = marker;
         showMarkerTitleSnippetDialog(marker);
         return true;
     }
+
     protected void showMarkerTitleSnippetDialog(Marker marker) {
         MarkerTitleSnippetDialogFragment dialogFragment = new MarkerTitleSnippetDialogFragment();
         dialogFragment.setMarker(marker);
         dialogFragment.show(getSupportFragmentManager(), "MarkerTitleSnippetDialog");
-    }
-
-    @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-
-    }
-
-    @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-
     }
 }
