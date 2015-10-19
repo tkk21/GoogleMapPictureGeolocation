@@ -8,9 +8,12 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 
+import com.google.android.gms.maps.model.Marker;
+
 public class MarkerTitleSnippetDialogFragment extends DialogFragment {
 
-    MarkerTitleSnippetDialogListener mListener;
+    private MarkerTitleSnippetDialogListener mListener;
+    private Marker marker;
     /* The activity that creates an instance of this dialog fragment must
      * implement this interface in order to receive event callbacks.
      * Each method passes the DialogFragment in case the host needs to query it. */
@@ -44,7 +47,7 @@ public class MarkerTitleSnippetDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-
+                        
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -53,5 +56,9 @@ public class MarkerTitleSnippetDialogFragment extends DialogFragment {
                     }
                 });
         return builder.create();
+    }
+
+    public void setMarker (Marker marker){
+        this.marker = marker;
     }
 }

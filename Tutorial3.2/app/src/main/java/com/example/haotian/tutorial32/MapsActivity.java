@@ -1,13 +1,11 @@
 package com.example.haotian.tutorial32;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.location.GpsSatellite;
 import android.location.Location;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
@@ -30,7 +28,8 @@ import java.util.Date;
 
 public class MapsActivity extends FragmentActivity
         implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
-        LocationListener, GoogleMap.OnMarkerClickListener {
+        LocationListener, GoogleMap.OnMarkerClickListener,
+        MarkerTitleSnippetDialogFragment.MarkerTitleSnippetDialogListener {
     /**constants */
     public static final String TAG = "MapsActivity";
     public static final int THUMBNAIL = 1;
@@ -286,8 +285,22 @@ public class MapsActivity extends FragmentActivity
         String snippet="<:";
         //make textbox pop up
         //set marker title and snippet to the input
-        marker.setTitle(title);
-        marker.setSnippet(snippet);
+        showMarkerTitleSnippetDialog(marker);
         return true;
+    }
+    protected void showMarkerTitleSnippetDialog(Marker marker) {
+        MarkerTitleSnippetDialogFragment dialogFragment = new MarkerTitleSnippetDialogFragment();
+        dialogFragment.setMarker(marker);
+        dialogFragment.show(getSupportFragmentManager(), "MarkerTitleSnippetDialog");
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
     }
 }
