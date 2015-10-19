@@ -270,6 +270,12 @@ public class MapsActivity extends FragmentActivity
         Log.wtf("MapsActivity", "Connection Failed");
     }
 
+    /**
+     * using OnMarkerClickListener instead of OnInfoWindowClickListener
+     * because view for OnInfoWindowClickListener is rendered as a still image
+     * @param marker
+     * @return
+     */
     @Override
     public boolean onMarkerClick(Marker marker) {
         Log.d("MapsActivity", "marker was clicked");
