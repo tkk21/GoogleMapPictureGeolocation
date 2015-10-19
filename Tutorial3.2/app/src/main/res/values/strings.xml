@@ -8,4 +8,7 @@
 
     <string name="marker_title">Marker Title</string>
     <string name="marker_snippet">Marker Snippet</string>
+    <string name="marker_message">Input Marker Title and Marker Snippet</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>
