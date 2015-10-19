@@ -50,6 +50,8 @@ public class MapsActivity extends FragmentActivity
 
     private LocationCSV locationCSV;
 
+    private Marker mCurrentMarker;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -281,10 +283,9 @@ public class MapsActivity extends FragmentActivity
         if (marker.getTitle() != null || marker.getSnippet() != null){
             return false;
         }
-        String title="yahallo~";
-        String snippet="<:";
         //make textbox pop up
         //set marker title and snippet to the input
+        mCurrentMarker = marker;
         showMarkerTitleSnippetDialog(marker);
         return true;
     }
