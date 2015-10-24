@@ -1,6 +1,7 @@
 package com.example.haotian.tutorial32;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
@@ -70,6 +71,7 @@ public class MapsActivity extends FragmentActivity
                 .addOnConnectionFailedListener(this).build();
         updateValuesFromBundle(savedInstanceState);
         locationCSV = new LocationCSV();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
     @Override
